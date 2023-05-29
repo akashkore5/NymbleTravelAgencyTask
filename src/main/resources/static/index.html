@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Travel Package Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h1>Travel Package Details</h1>
+
+<h2 id="packageName"></h2>
+
+<h3>Package Details:</h3>
+<table id="packageDetails">
+    <tr>
+        <th>Name</th>
+        <th>Max Capacity</th>
+    </tr>
+</table>
+
+<h3>Passenger List:</h3>
+<table id="passengerList">
+    <tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Budget</th>
+        <th>Category</th>
+    </tr>
+</table>
+
+<h3>Passenger Details:</h3>
+<table id="passengerDetailsTable">
+    <tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Budget</th>
+        <th>Category</th>
+    </tr>
+</table>
+<!-- ... -->
+<script>
+    // Fetch package details
+    var packageName = "Package 1";
+    document.getElementById("packageName").textContent = packageName;
+
+    // Fetch package details from the code
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/api/travel-packages?packageName=" + packageName);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var packageDetails = JSON.parse(xhr.responseText);
+            var packageDetailsHTML = "";
+            packageDetailsHTML += "<tr>";
+            packageDetailsHTML += "<td>" + packageDetails.name + "</td>";
+            packageDetailsHTML += "<td>" + packageDetails.maxCapacity + "</td>";
+            packageDetailsHTML += "</tr>";
+            document.getElementById("packageDetails").innerHTML = packageDetailsHTML;
+        } else {
+            alert("Error: " + xhr.status);
+        }
+    };
+    xhr.send();
+
+    // Fetch passenger list from the code
+    xhr = new XMLHttpRequest();
+    xhr.open("GET", "/api/travel-packages/" + packageName + "/passenger-list/DestinationName"); // Replace "DestinationName" with the actual destination name
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var passengerList = JSON.parse(xhr.responseText);
+            var passengerListHTML = "";
+            for (var i = 0; i < passengerList.length; i++) {
+                passengerListHTML += "<tr>";
+                passengerListHTML += "<td>" + passengerList[i].name + "</td>";
+                passengerListHTML += "<td>" + passengerList[i].id + "</td>";
+                passengerListHTML += "<td>" + passengerList[i].budget + "</td>";
+                passengerListHTML += "<td>" + passengerList[i].category + "</td>";
+                passengerListHTML += "</tr>";
+            }
+            document.getElementById("passengerList").innerHTML = passengerListHTML;
+        } else {
+            alert("Error: " + xhr.status);
+        }
+    };
+    xhr.send();
+
+    // Fetch passenger details from the code
+    var passengerNumber = 1; // Replace with the actual passenger number
+    xhr = new XMLHttpRequest();
+    xhr.open("GET", "/api/travel-packages/passengers/" + passengerNumber);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var passengerDetails = JSON.parse(xhr.responseText);
+            var passengerDetailsHTML = "";
+            passengerDetailsHTML += "<tr>";
+            passengerDetailsHTML += "<td>" + passengerDetails.name + "</td>";
+            passengerDetailsHTML += "<td>" + passengerDetails.id + "</td>";
+            passengerDetailsHTML += "<td>" + passengerDetails.budget + "</td>";
+            passengerDetailsHTML += "<td>" + passengerDetails.category + "</td>";
+            passengerDetailsHTML += "</tr>";
+            document.getElementById("passengerDetailsTable").innerHTML = passengerDetailsHTML;
+        } else {
+            alert("Error: " + xhr.status);
+        }
+    };
+    xhr.send();
+</script>
+<!-- ... -->
+
+
+</body>
+</html>
