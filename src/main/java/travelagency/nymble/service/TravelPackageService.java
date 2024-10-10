@@ -210,6 +210,15 @@ public class TravelPackageService {
         }
         return null;
     }
+    
+    private Passenger findPassengerByNames(int passengerNumber) {
+        for (Passenger passenger : passengers) {
+            if (passenger.getPassengerNumber() == passengerNumber) {
+                return passenger;
+            }
+        }
+        return null;
+    }
 
     /**
      * Signs up a passenger for an activity.
